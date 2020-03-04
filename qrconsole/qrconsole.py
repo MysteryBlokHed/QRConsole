@@ -4,15 +4,17 @@ from PIL import Image
 class QRConsole(object):
     """
     `char: str` - The char to use for white in the QR Code. Must be one character only.
+
+    `invert: bool` - Whether or not to use the character for printing the black of the QR Code instead of the white.
     """
-    def __init__(self, char: str="@"):
+    def __init__(self, char: str="\u2588", invert: bool=False):
         # Double-check char length & type
         if type(char) is not str:
             raise TypeError(f"Expected str for char, got {type(char).__name__}.")
         elif len(char) != 1:
             raise ValueError(f"char should be of length 1, but it was of length {len(char)}.")
-        else:
-            self._char = char
+        self._char = char
+        self._invert = invert
     
     def consoleify(self, qr_img: str or Image, resize_factor: float=1):
         """
@@ -39,8 +41,14 @@ class QRConsole(object):
         for y in range(qr.size[1]):
             for x in range(qr.size[0]):
                 if qr_pixels[x,y][0] > 128 and qr_pixels[x,y][1] > 128 and qr_pixels[x,y][2] > 128:
-                    render += self._char*2
+                    if not self._invert:
+                        render += self._char*2
+                    else:
+                        render += "  "
                 else:
-                    render += "  "
+                    if not self._invert:
+                        render += "  "
+                    else:
+                        render += self._char*2
             render += "\n"
         return render

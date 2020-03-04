@@ -6,4 +6,9 @@ qr = QRConsole()
 img = input("Target image (example_code.png): ")
 if img == "":
     img = "example_code.png"
-print(qr.consoleify(img))
+resize_factor = input("Resize factor (how much to downscale image by) (3.5): ")
+if resize_factor == "":
+    resize_factor = 3.5
+resize_factor = float(resize_factor)
+
+print(qr.consoleify(img, resize_factor))
