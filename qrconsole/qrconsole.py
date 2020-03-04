@@ -14,15 +14,24 @@ class QRConsole(object):
         else:
             self._char = char
     
-    def consoleify(self, qr_img: str):
+    def consoleify(self, qr_img: str or Image, resize_factor: float=1):
         """
         Turn a QR code into something console-printable.
 
-        `qr_img: str` - The path to the QR Code image.
+        `qr_img: str or Image` - The path to the QR Code image OR a Pillow Image object.
+        
+        `resize_factor: float` - How much to shrink/grow the image by (`width/resize_factor`, `height/resize_factor`)
 
         Returns: `str` - The console-ified version of the QR Code.
         """
-        qr = Image.open(qr_img)
+        # Check type
+        if type(qr_img) is str:
+            qr = Image.open(qr_img)
+        else: # Assume the variable is an Image object, since there are too many types of PIL Images to check
+            qr = qr_img
+        # Resize the image if it needs to be
+        if resize_factor != 1:
+            qr = qr.resize((round(qr.size[0]/resize_factor), round(qr.size[1]/resize_factor)))
         qr_pixels = qr.load()
         # Start rendering
         render = ""

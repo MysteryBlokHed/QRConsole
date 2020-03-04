@@ -4,5 +4,13 @@ import sys
 from .qrconsole import QRConsole
 
 qr = QRConsole()
-# Use last argument as image path
-print(qr.consoleify(sys.argv[-1:][0]))
+# See if the last argv is a float
+try:
+    resize_factor = float(sys.argv[-1])
+    img = sys.argv[-2]
+# If not, use the default resize_factor
+except ValueError:
+    resize_factor = 1
+    img = sys.argv[-1]
+
+print(qr.consoleify(img, resize_factor))

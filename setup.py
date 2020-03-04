@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="qrconsole",
-    version="1.0.0",
+    version="1.1.0",
     author="Adam Thompson-Sharpe",
     author_email="adamthompsonsharpe@gmail.com",
     description="A library to display QR codes in console.",
